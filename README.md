@@ -29,7 +29,7 @@ kaggle datasets download -d [KA-KA-shi/Lending Club Loan Data] -p data/ --unzip
 ```
 
 ### Option 2: Manual Setup
-1. Download the dataset from [https://www.kaggle.com/datasets/adarshsng/lending-club-loan-data-csv].
+1. Download the DataSet from [https://www.kaggle.com/datasets/adarshsng/lending-club-loan-data-csv].
 2. Create a folder named `DataSet/` in the project root.
 3. Extract and place `loan.csv` inside the `data/` folder.
 
