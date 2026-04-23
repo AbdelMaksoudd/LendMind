@@ -1,5 +1,6 @@
 DataSet/
 venv/
+.venv/
 *.pyc
-__pycache__/
+.mypy_cache
 .env
