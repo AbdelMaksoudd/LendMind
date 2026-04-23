@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Loan Management System{% endblock %}</title>
+    <link rel="stylesheet" href="/public/style.css" />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <nav class="nav-bar">
+      <div class="nav-brand">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#0C5CAB"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <path d="M2 10h20" />
+        </svg>
+        <span class="nav-title">LendMind</span>
+      </div>
+      <div class="nav-links">
+        {% if user %} {% if user.role == 'admin' %}
+        <a
+          href="/dashboard"
+          class="nav-link {% block nav_dashboard %}{% endblock %}"
+          >Dashboard</a
+        >
+        {% endif %}
+        <a href="/apply" class="nav-link {% block nav_apply %}{% endblock %}"
+          >Apply</a
+        >
+        <span class="nav-user">{{ user.username }}</span>
+        <a href="/logout" class="nav-link nav-logout">Logout</a>
+        {% else %}
+        <a href="/login" class="nav-link">Login</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <main class="main-content">{% block content %}{% endblock %}</main>
+
+    <div id="toast-container"></div>
+
+    <script src="/public/main.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

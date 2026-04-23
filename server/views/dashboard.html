@@ -1,0 +1,146 @@
+{% extends "layout.html" %} {% block title %}Admin Dashboard - Loan Management
+System{% endblock %} {% block nav_dashboard %}active{% endblock %} {% block
+content %}
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Management Dashboard</h1>
+    <p class="subtitle">Review and manage loan applications in real-time</p>
+  </div>
+
+  <div class="dashboard-stats">
+    <div class="stat-card panel">
+      <span class="stat-label">Total Applications</span>
+      <span class="stat-value">{{ analytics.total }}</span>
+    </div>
+    <div class="stat-card panel">
+      <span class="stat-label">Approved</span>
+      <span class="stat-value stat-approved">{{ analytics.approved }}</span>
+    </div>
+    <div class="stat-card panel">
+      <span class="stat-label">Pending</span>
+      <span class="stat-value stat-pending">{{ analytics.pending }}</span>
+    </div>
+    <div class="stat-card panel">
+      <span class="stat-label">Rejected</span>
+      <span class="stat-value stat-rejected">{{ analytics.rejected }}</span>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <section class="dashboard-table panel" aria-label="Applicant Data Table">
+      <h2>Applicant Records</h2>
+
+      {% if applications %}
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Loan Amount</th>
+              <th scope="col">Interest Rate</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            <tr tabindex="0" data-id="{{ app.id }}">
+              <td>{{ app.id }}</td>
+              <td>${{ "{:,.2f}".format(app.loan_amnt) }}</td>
+              <td>{{ "{:.2f}".format(app.int_rate) }}%</td>
+              <td>{{ app.created_at.strftime('%b %d, %Y') }}</td>
+              <td>
+                <span class="badge badge-{{ app.status.value.lower() }}">
+                  {{ app.status.value }}
+                </span>
+              </td>
+              <td>
+                <a
+                  href="/applications/{{ app.id }}"
+                  class="btn btn-sm btn-primary"
+                  >View Details</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(255,255,255,0.2)"
+          stroke-width="1.5"
+        >
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="9" y1="15" x2="15" y2="15" />
+        </svg>
+        <p>No applicants found</p>
+        <p class="text-muted">Applications will appear here once submitted.</p>
+      </div>
+      {% endif %}
+    </section>
+
+    <section
+      class="dashboard-chart panel"
+      aria-label="Approval Analytics Chart"
+    >
+      <h2>Approval Analytics</h2>
+
+      <!-- Hidden data table for screen readers -->
+      <table class="sr-only" aria-label="Approval analytics summary">
+        <tr>
+          <th>Status</th>
+          <th>Count</th>
+        </tr>
+        <tr>
+          <td>Approved</td>
+          <td>{{ analytics.approved }}</td>
+        </tr>
+        <tr>
+          <td>Pending</td>
+          <td>{{ analytics.pending }}</td>
+        </tr>
+        <tr>
+          <td>Rejected</td>
+          <td>{{ analytics.rejected }}</td>
+        </tr>
+      </table>
+
+      <div
+        class="chart-container"
+        id="chart-container"
+        aria-hidden="true"
+        data-approved="{{ analytics.approved }}"
+        data-pending="{{ analytics.pending }}"
+        data-rejected="{{ analytics.rejected }}"
+      >
+        <canvas id="analytics-chart" width="280" height="280"></canvas>
+      </div>
+
+      <div class="chart-legend" aria-hidden="true">
+        <div class="legend-item">
+          <span class="legend-dot legend-approved"></span>
+          <span>Approved ({{ analytics.approved }})</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot legend-pending"></span>
+          <span>Pending ({{ analytics.pending }})</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot legend-rejected"></span>
+          <span>Rejected ({{ analytics.rejected }})</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

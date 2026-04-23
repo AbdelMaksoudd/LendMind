@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}Application #{{ application.id }} - Loan Management System{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <div class="detail-header">
+        <a href="/dashboard" class="btn btn-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Back to Dashboard
+        </a>
+        <div class="detail-title-row">
+            <h1>Application #{{ application.id }}</h1>
+            <span class="badge badge-{{ application.status.value.lower() }}">{{ application.status.value }}</span>
+        </div>
+        <p class="subtitle">Submitted on {{ application.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+    </div>
+
+    <div class="detail-grid">
+        <section class="panel detail-section" aria-label="Loan Details">
+            <h2>Loan Details</h2>
+            <dl class="detail-list">
+                <div class="detail-item">
+                    <dt>Loan Amount Requested</dt>
+                    <dd>${{ "{:,.2f}".format(application.loan_amnt) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Expected Interest Rate</dt>
+                    <dd>{{ "{:.2f}".format(application.int_rate) }}%</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="panel detail-section" aria-label="Financial Profile">
+            <h2>Financial Profile</h2>
+            <dl class="detail-list">
+                <div class="detail-item">
+                    <dt>Annual Income</dt>
+                    <dd>${{ "{:,.2f}".format(application.annual_inc) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Debt-to-Income Ratio</dt>
+                    <dd>{{ "{:.2f}".format(application.dti) }}%</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="panel detail-section" aria-label="Credit and Debts">
+            <h2>Credit &amp; Debts</h2>
+            <dl class="detail-list">
+                <div class="detail-item">
+                    <dt>Total Revolving Balance</dt>
+                    <dd>${{ "{:,.2f}".format(application.revol_bal) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Revolving Utilization</dt>
+                    <dd>{{ "{:.2f}".format(application.revol_util) }}%</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Total Balance Excl. Mortgage</dt>
+                    <dd>${{ "{:,.2f}".format(application.total_bal_ex_mort) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Bankcard Utilization</dt>
+                    <dd>{{ "{:.2f}".format(application.bc_util) }}%</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Bankcard Open to Buy</dt>
+                    <dd>${{ "{:,.2f}".format(application.bc_open_to_buy) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Total Bankcard Limit</dt>
+                    <dd>${{ "{:,.2f}".format(application.total_bc_limit) }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="panel detail-section" aria-label="Banking History">
+            <h2>Banking History</h2>
+            <dl class="detail-list">
+                <div class="detail-item">
+                    <dt>Age of Oldest Revolving Account</dt>
+                    <dd>{{ application.mo_sin_old_rev_tl_op }} months</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Age of Oldest Installment Account</dt>
+                    <dd>{{ application.mo_sin_old_il_acct }} months</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Total Current Balance</dt>
+                    <dd>${{ "{:,.2f}".format(application.tot_cur_bal) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Average Current Balance</dt>
+                    <dd>${{ "{:,.2f}".format(application.avg_cur_bal) }}</dd>
+                </div>
+                <div class="detail-item">
+                    <dt>Revolving High Limit</dt>
+                    <dd>${{ "{:,.2f}".format(application.total_rev_hi_lim) }}</dd>
+                </div>
+            </dl>
+        </section>
+    </div>
+
+    {% if application.status.value == 'Pending' %}
+    <div class="detail-actions panel">
+        <h2>Review Decision</h2>
+        <form method="post" action="/applications/{{ application.id }}/status" class="inline-form">
+            <button type="submit" name="status" value="Approved" class="btn btn-success">Approve Application</button>
+            <button type="submit" name="status" value="Rejected" class="btn btn-danger">Reject Application</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

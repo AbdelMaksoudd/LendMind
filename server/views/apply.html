@@ -1,0 +1,266 @@
+{% extends "layout.html" %} {% block title %}Loan Application - Loan Management
+System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
+%}
+<div class="apply-container">
+  <div class="panel">
+    <div class="panel-header">
+      <h1>Loan Application</h1>
+      <p class="subtitle">
+        Complete the form below to submit your loan request
+      </p>
+    </div>
+
+    {% if success %}
+    <div class="alert alert-success" role="alert">{{ success }}</div>
+    {% endif %} {% if errors %} {% for error in errors %}
+    <div class="alert alert-error" role="alert">{{ error }}</div>
+    {% endfor %} {% endif %}
+
+    <form method="post" action="/apply" class="form" id="loan-form">
+      <fieldset class="form-section">
+        <legend>Loan Details</legend>
+
+        <div class="form-group">
+          <label for="loan_amnt">Loan Amount Requested</label>
+          <input
+            type="number"
+            id="loan_amnt"
+            name="loan_amnt"
+            required
+            min="1"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="int_rate"
+            >Expected Interest Rate —
+            <span id="int_rate_display">10.00</span>%</label
+          >
+          <input
+            type="range"
+            id="int_rate"
+            name="int_rate"
+            min="0.01"
+            max="30.00"
+            step="0.01"
+            value="10.00"
+            class="range-slider"
+          />
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Financial Profile</legend>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="annual_inc">Annual Income</label>
+            <input
+              type="number"
+              id="annual_inc"
+              name="annual_inc"
+              required
+              min="1"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="dti">Debt-to-Income Ratio %</label>
+            <input
+              type="number"
+              id="dti"
+              name="dti"
+              required
+              min="0"
+              max="100"
+              step="0.01"
+              placeholder="e.g. 18.5"
+            />
+            <span class="form-hint">Enter a value between 0 and 100.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Credit &amp; Debts</legend>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="revol_bal">Total Revolving Balance</label>
+            <input
+              type="number"
+              id="revol_bal"
+              name="revol_bal"
+              required
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="revol_util">Revolving Utilization %</label>
+            <input
+              type="number"
+              id="revol_util"
+              name="revol_util"
+              required
+              min="0"
+              max="100"
+              step="0.01"
+              placeholder="e.g. 45.0"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="total_bal_ex_mort">Total Balance Excl. Mortgage</label>
+          <input
+            type="number"
+            id="total_bal_ex_mort"
+            name="total_bal_ex_mort"
+            required
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bc_util">Bankcard Utilization %</label>
+            <input
+              type="number"
+              id="bc_util"
+              name="bc_util"
+              required
+              min="0"
+              max="100"
+              step="0.01"
+              placeholder="e.g. 30.0"
+            />
+          </div>
+          <div class="form-group">
+            <label for="bc_open_to_buy">Bankcard Open to Buy</label>
+            <input
+              type="number"
+              id="bc_open_to_buy"
+              name="bc_open_to_buy"
+              required
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="total_bc_limit">Total Bankcard Limit</label>
+          <input
+            type="number"
+            id="total_bc_limit"
+            name="total_bc_limit"
+            required
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Banking History</legend>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mo_sin_old_rev_tl_op"
+              >Age of Oldest Revolving Account in Months</label
+            >
+            <input
+              type="number"
+              id="mo_sin_old_rev_tl_op"
+              name="mo_sin_old_rev_tl_op"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 120"
+            />
+          </div>
+          <div class="form-group">
+            <label for="mo_sin_old_il_acct"
+              >Age of Oldest Installment Account in Months</label
+            >
+            <input
+              type="number"
+              id="mo_sin_old_il_acct"
+              name="mo_sin_old_il_acct"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 60"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tot_cur_bal">Total Current Balance</label>
+            <input
+              type="number"
+              id="tot_cur_bal"
+              name="tot_cur_bal"
+              required
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+          <div class="form-group">
+            <label for="avg_cur_bal">Average Current Balance</label>
+            <input
+              type="number"
+              id="avg_cur_bal"
+              name="avg_cur_bal"
+              required
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="total_rev_hi_lim">Revolving High Limit</label>
+          <input
+            type="number"
+            id="total_rev_hi_lim"
+            name="total_rev_hi_lim"
+            required
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          Submit Application
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  var slider = document.getElementById("int_rate");
+  var display = document.getElementById("int_rate_display");
+  if (slider && display) {
+    slider.addEventListener("input", function () {
+      display.textContent = parseFloat(this.value).toFixed(2);
+    });
+  }
+</script>
+{% endblock %}
