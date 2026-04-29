@@ -18,6 +18,19 @@ The repository is organized into a **Monorepo** structure, ensuring a clean sepa
 
 ---
 
+## 🧠 AI Engineering Highlights
+
+This project implements a rigorous, multi-stage data engineering pipeline to ensure model reliability and production readiness:
+
+*   **Comprehensive Data Preprocessing**: Managed and cleaned a massive **1.2 GB dataset**, handling complex **Missing Values** and ensuring data consistency across 150+ raw variables.
+*   **Data Leakage Prevention**: Systematically identified and removed 10+ **Post-Origination Variables** (e.g., `late fees`, `recoveries`) that would not be available at the time of application, preventing "look-ahead" bias.
+*   **Intelligent Feature Engineering**: Conducted a multi-layered selection process:
+    - **Multicollinearity Filtering**: Used Correlation Matrices and VIF to remove redundant features.
+    - **Model-Based Importance**: Leveraged **Random Forest** to identify the **15 "Golden" Features** with the highest predictive power.
+*   **Robust System Validation**: Implemented **Pydantic Schemas** within the FastAPI backend to enforce strict data typing and validation, ensuring the system remains stable under various input scenarios. (not yet)
+
+---
+
 ## 📊 Dataset Setup
 
 The system is trained on a massive historical loan dataset (1.2 GB). Due to GitHub's file size limits, `loan.csv` is excluded from the repository.
@@ -27,7 +40,7 @@ The system is trained on a massive historical loan dataset (1.2 GB). Due to GitH
 If you have the Kaggle CLI installed, run the following commands in your terminal:
 
 ```bash
-mkdir DataSet
+mkdir data
 kaggle datasets download -d [KA-KA-shi/Lending Club Loan Data] -p data/ --unzip
 ```
 
@@ -41,16 +54,22 @@ kaggle datasets download -d [KA-KA-shi/Lending Club Loan Data] -p data/ --unzip
 
 ## 🚀 Getting Started
 
-### Run the Server
+### 1. Environment Setup
 
 ```bash
 cd server
 python -m venv .venv
+
+# Windows:
 .venv\Scripts\activate
+
+# Linux/Mac:
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
-Run the server:
+### 2. Run the Production Server
 
 ```bash
 python ./src/main.py
@@ -63,6 +82,8 @@ python ./src/main.py
 - **AI/ML**: Pandas, Scikit-Learn, Numpy, Joblib.
 - **Backend**: FastAPI, WebSockets, Jinja2, SQLAlchemy, SQLite.
 - **Version Control**: Git & GitHub.
+- **Tools**: VS Code, Jupyter Notebooks.
+
 
 ---
 
