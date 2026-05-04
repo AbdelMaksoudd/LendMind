@@ -416,7 +416,7 @@ select {
 
 .dashboard-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-sm);
 }
 
@@ -442,10 +442,6 @@ select {
 
 .stat-approved {
   color: var(--success);
-}
-
-.stat-pending {
-  color: var(--warning);
 }
 
 .stat-rejected {
@@ -522,11 +518,6 @@ tbody tr:focus {
   color: var(--success);
 }
 
-.badge-pending {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
-}
-
 .badge-rejected {
   background: rgba(239, 68, 68, 0.1);
   color: var(--danger);
@@ -596,10 +587,6 @@ tbody tr:focus {
 
 .legend-approved {
   background: var(--success);
-}
-
-.legend-pending {
-  background: var(--warning);
 }
 
 .legend-rejected {
@@ -873,10 +860,6 @@ tbody tr:focus {
 
   .detail-list {
     grid-template-columns: 1fr;
-  }
-
-  .detail-actions .inline-form {
-    flex-direction: column;
   }
 }
 

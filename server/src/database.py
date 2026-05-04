@@ -18,7 +18,6 @@ Base = declarative_base()
 
 
 class LoanStatus(str, enum.Enum):
-    PENDING = "Pending"
     APPROVED = "Approved"
     REJECTED = "Rejected"
 
@@ -51,7 +50,7 @@ class LoanApplication(Base):
     avg_cur_bal = Column(Float, nullable=False)
     total_rev_hi_lim = Column(Float, nullable=False)
 
-    status = Column(Enum(LoanStatus), default=LoanStatus.PENDING, nullable=False)
+    status = Column(Enum(LoanStatus), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
 

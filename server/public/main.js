@@ -45,15 +45,6 @@ function initWebSocket() {
             if (window.location.pathname === '/dashboard') {
                 setTimeout(function () { location.reload(); }, 1500);
             }
-        } else if (data.event === 'STATUS_UPDATE') {
-            showToast(
-                'Application Updated',
-                'Application #' + data.id + ' is now ' + data.status
-            );
-            var detailPath = '/applications/' + data.id;
-            if (window.location.pathname === '/dashboard' || window.location.pathname === detailPath) {
-                setTimeout(function () { location.reload(); }, 1500);
-            }
         }
     }
 
@@ -92,9 +83,8 @@ function initChart() {
     if (!container) return;
 
     var approved = parseInt(container.dataset.approved || '0', 10);
-    var pending = parseInt(container.dataset.pending || '0', 10);
     var rejected = parseInt(container.dataset.rejected || '0', 10);
-    var total = approved + pending + rejected;
+    var total = approved + rejected;
 
     var canvas = document.getElementById('analytics-chart');
     if (!canvas) return;
@@ -132,7 +122,6 @@ function initChart() {
 
     var segments = [
         { value: approved, color: '#10b981', label: 'Approved' },
-        { value: pending, color: '#f59e0b', label: 'Pending' },
         { value: rejected, color: '#ef4444', label: 'Rejected' },
     ];
 

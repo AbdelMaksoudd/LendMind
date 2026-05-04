@@ -17,10 +17,6 @@ content %}
       <span class="stat-value stat-approved">{{ analytics.approved }}</span>
     </div>
     <div class="stat-card panel">
-      <span class="stat-label">Pending</span>
-      <span class="stat-value stat-pending">{{ analytics.pending }}</span>
-    </div>
-    <div class="stat-card panel">
       <span class="stat-label">Rejected</span>
       <span class="stat-value stat-rejected">{{ analytics.rejected }}</span>
     </div>
@@ -106,10 +102,6 @@ content %}
           <td>{{ analytics.approved }}</td>
         </tr>
         <tr>
-          <td>Pending</td>
-          <td>{{ analytics.pending }}</td>
-        </tr>
-        <tr>
           <td>Rejected</td>
           <td>{{ analytics.rejected }}</td>
         </tr>
@@ -120,7 +112,6 @@ content %}
         id="chart-container"
         aria-hidden="true"
         data-approved="{{ analytics.approved }}"
-        data-pending="{{ analytics.pending }}"
         data-rejected="{{ analytics.rejected }}"
       >
         <canvas id="analytics-chart" width="280" height="280"></canvas>
@@ -130,10 +121,6 @@ content %}
         <div class="legend-item">
           <span class="legend-dot legend-approved"></span>
           <span>Approved ({{ analytics.approved }})</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot legend-pending"></span>
-          <span>Pending ({{ analytics.pending }})</span>
         </div>
         <div class="legend-item">
           <span class="legend-dot legend-rejected"></span>
