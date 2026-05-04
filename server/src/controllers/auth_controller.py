@@ -10,7 +10,9 @@ def render_login_page(request: Request):
         for u, info in USERS.items()
     ]
     return templates.TemplateResponse(
-        "login.html", {"request": request, "error": None, "demo_users": demo_users}
+        request=request,
+        name="login.html",
+        context={"request": request, "error": None, "demo_users": demo_users},
     )
 
 
@@ -25,8 +27,9 @@ def handle_login(request: Request, username: str, password: str):
         for u, info in USERS.items()
     ]
     return templates.TemplateResponse(
-        "login.html",
-        {
+        request=request,
+        name="login.html",
+        context={
             "request": request,
             "error": "Invalid credentials. Please try again.",
             "demo_users": demo_users,

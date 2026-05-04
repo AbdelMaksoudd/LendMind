@@ -18,18 +18,17 @@ def render_dashboard(request: Request, db: Session):
     total = len(applications)
     approved = sum(1 for a in applications if a.status == LoanStatus.APPROVED)
     rejected = sum(1 for a in applications if a.status == LoanStatus.REJECTED)
-    pending = sum(1 for a in applications if a.status == LoanStatus.PENDING)
 
     analytics = {
         "total": total,
         "approved": approved,
         "rejected": rejected,
-        "pending": pending,
     }
 
     return templates.TemplateResponse(
-        "dashboard.html",
-        {
+        request=request,
+        name="dashboard.html",
+        context={
             "request": request,
             "user": user,
             "applications": applications,
