@@ -12,7 +12,7 @@ from routers.applications import router as applications_router
 from routers.ws import router as ws_router
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="lendmind-mgmt-secret-key-2024")
+app.add_middleware(SessionMiddleware, secret_key="lendmind-mgmt-secret-key-2026")
 
 app.mount("/public", StaticFiles(directory=str(BASE_DIR / "public")), name="public")
 
