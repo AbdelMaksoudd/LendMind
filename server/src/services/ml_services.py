@@ -21,7 +21,6 @@ def main():
   "total_rev_hi_lim": 2300.0
   
 }
-
     print(loan_approve(test))
 
 
@@ -30,8 +29,8 @@ def main():
 def loan_approve(user_input):
     requsted_loan = user_input['loan_amnt']
 
-    mlr_model = joblib.load('saved_models/mlr_model.pkl')
-    scaler_mlr = joblib.load('saved_models/scaler_mlr.pkl')
+    mlr_model = joblib.load('../../saved_models/mlr_model.pkl')
+    scaler_mlr = joblib.load('../../saved_models/scaler_mlr.pkl')
 
     df = pd.DataFrame([user_input])
     x_mlr = df.drop(columns='loan_amnt')
@@ -47,6 +46,9 @@ def loan_approve(user_input):
     
 
     
+
+
+
 
 
 
