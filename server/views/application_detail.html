@@ -25,8 +25,8 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
       >
     </div>
     <p class="subtitle">
-      Submitted on {{ application.created_at.strftime('%B %d, %Y at %I:%M %p')
-      }}
+      Applicant: {{ application.applicant_name }} &middot; Submitted on {{
+      application.created_at.strftime('%B %d, %Y at %I:%M %p') }}
     </p>
   </div>
 

@@ -13,6 +13,8 @@ from routers.ws import router as ws_router
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="lendmind-mgmt-secret-key-2026")
+# TODO: create .env file and load secret key from it
+
 
 app.mount("/public", StaticFiles(directory=str(BASE_DIR / "public")), name="public")
 

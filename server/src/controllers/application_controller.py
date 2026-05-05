@@ -18,6 +18,7 @@ def render_apply_page(request: Request, user):
 
 async def submit_application(
     request: Request,
+    applicant_name: str,
     loan_amnt: float,
     int_rate: float,
     annual_inc: float,
@@ -40,6 +41,8 @@ async def submit_application(
         return RedirectResponse(url="/login", status_code=303)
 
     errors = []
+    if not applicant_name.strip():
+        errors.append("Applicant name is required.")
     if loan_amnt <= 0:
         errors.append("Loan amount must be greater than zero.")
     if int_rate < 0 or int_rate > 100:
@@ -104,6 +107,7 @@ async def submit_application(
     status, predicted_loan = loan_approve(user_input)
 
     application = LoanApplication(
+        applicant_name=applicant_name.strip(),
         loan_amnt=loan_amnt,
         int_rate=int_rate,
         annual_inc=annual_inc,

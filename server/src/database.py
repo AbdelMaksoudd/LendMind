@@ -26,6 +26,7 @@ class LoanApplication(Base):
     __tablename__ = "loan_applications"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    applicant_name = Column(String, nullable=False)
 
     # Section 1: Loan Details
     loan_amnt = Column(Float, nullable=False)

@@ -20,6 +20,7 @@ async def apply_page(request: Request, db: Session = Depends(get_db)):
 @router.post("/apply")
 async def apply_submit(
     request: Request,
+    applicant_name: str = Form(...),
     loan_amnt: float = Form(...),
     int_rate: float = Form(...),
     annual_inc: float = Form(...),
@@ -39,6 +40,7 @@ async def apply_submit(
 ):
     return await submit_application(
         request,
+        applicant_name,
         loan_amnt,
         int_rate,
         annual_inc,

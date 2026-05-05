@@ -32,6 +32,7 @@ content %}
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th scope="col">Applicant</th>
               <th scope="col">Loan Amount</th>
               <th scope="col">Interest Rate</th>
               <th scope="col">Date</th>
@@ -43,6 +44,7 @@ content %}
             {% for app in applications %}
             <tr tabindex="0" data-id="{{ app.id }}">
               <td>{{ app.id }}</td>
+              <td>{{ app.applicant_name }}</td>
               <td>${{ "{:,.2f}".format(app.loan_amnt) }}</td>
               <td>{{ "{:.2f}".format(app.int_rate) }}%</td>
               <td>{{ app.created_at.strftime('%b %d, %Y') }}</td>
