@@ -5,6 +5,11 @@ from database import LoanStatus
 
 SAVED_MODELS_DIR = Path(__file__).resolve().parent.parent.parent / "saved_models"
 
+print("Loading models...")
+rf_model = joblib.load(SAVED_MODELS_DIR / "rf_model.pkl")
+scaler_rf = joblib.load(SAVED_MODELS_DIR / "scaler_rf.pkl")
+print("Models loaded globally!")
+
 
 def calculate_monthly_installment(loan_amnt, int_rate, loan_term):
     P = loan_amnt
@@ -28,10 +33,6 @@ def loan_approve(user_input):
     initial_approve = False
 
     ### for loan approve (rf model):
-
-    rf_model = joblib.load(SAVED_MODELS_DIR / "rf_model.pkl")
-    scaler_rf = joblib.load(SAVED_MODELS_DIR / "scaler_rf.pkl")
-
     x_rf_scaled = scaler_rf.transform(df)
     predicted_loan = rf_model.predict(x_rf_scaled)
     if predicted_loan == 1:
