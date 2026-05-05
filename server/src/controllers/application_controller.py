@@ -86,25 +86,25 @@ async def submit_application(
             },
         )
 
-    user_input = {
-        "loan_amnt": loan_amnt,
+    data = {
         "int_rate": int_rate,
-        "loan_term": loan_term,
-        "annual_inc": annual_inc,
         "dti": dti,
-        "revol_bal": revol_bal,
+        "installment": calculate_monthly_installment(loan_amnt, int_rate, loan_term),
+        "annual_inc": annual_inc,
         "revol_util": revol_util,
-        "total_bal_ex_mort": total_bal_ex_mort,
-        "bc_util": bc_util,
-        "bc_open_to_buy": bc_open_to_buy,
-        "total_bc_limit": total_bc_limit,
-        "mo_sin_old_rev_tl_op": mo_sin_old_rev_tl_op,
-        "tot_cur_bal": tot_cur_bal,
         "avg_cur_bal": avg_cur_bal,
+        "revol_bal": revol_bal,
+        "bc_open_to_buy": bc_open_to_buy,
+        "tot_cur_bal": tot_cur_bal,
+        "mo_sin_old_rev_tl_op": mo_sin_old_rev_tl_op,
+        "loan_amnt": loan_amnt,
+        "bc_util": bc_util,
+        "total_bc_limit": total_bc_limit,
+        "total_bal_ex_mort": total_bal_ex_mort,
         "total_rev_hi_lim": total_rev_hi_lim,
     }
 
-    status, predicted_loan = loan_approve(user_input)
+    load_predication = loan_approve(data)
 
     application = LoanApplication(
         applicant_name=applicant_name.strip(),
@@ -123,7 +123,7 @@ async def submit_application(
         tot_cur_bal=tot_cur_bal,
         avg_cur_bal=avg_cur_bal,
         total_rev_hi_lim=total_rev_hi_lim,
-        status=status,
+        status=load_predication["status"],
     )
     db.add(application)
     db.commit()
@@ -138,10 +138,13 @@ async def submit_application(
         }
     )
 
-    if status == LoanStatus.APPROVED:
-        msg = f"Your loan application has been approved! Predicted eligible amount: ${predicted_loan:,.2f}"
+    if load_predication["status"] == LoanStatus.APPROVED:
+        msg = f"Congratulations! Your loan application has been fully approved for the requested amount of ${load_predication['value']}"
     else:
-        msg = f"Your loan application has been rejected. Predicted eligible amount: ${predicted_loan:,.2f}. Please consider applying for a lower amount."
+        if load_predication["value"]:
+            msg = f"While we cannot approve the full amount requested, we are pleased to inform you that you are pre-approved for a counter-offer of up to ${load_predication['value']}."
+        else:
+            msg = "We regret to inform you that we are unable to approve your loan application at this time based on your current credit profile."
 
     return templates.TemplateResponse(
         request=request,
@@ -173,3 +176,14 @@ def render_application_detail(request: Request, app_id: int, db: Session):
             "application": application,
         },
     )
+
+
+def calculate_monthly_installment(loan_amnt, int_rate, loan_term):
+    P = loan_amnt
+    n = loan_term
+    r = int_rate / 12 / 100
+
+    if r == 0:
+        return round(P / n, 2)
+
+    return round(P * (r * (1 + r) ** n) / ((1 + r) ** n - 1), 2)
