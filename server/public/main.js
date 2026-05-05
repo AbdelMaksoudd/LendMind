@@ -59,7 +59,7 @@ function initWebSocket() {
         toastContainer.appendChild(toast);
         setTimeout(function () {
             if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 5000);
+        }, 15000);
     }
 
     function escapeHtml(str) {
