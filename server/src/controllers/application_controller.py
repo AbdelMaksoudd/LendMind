@@ -30,7 +30,6 @@ async def submit_application(
     bc_open_to_buy: float,
     total_bc_limit: float,
     mo_sin_old_rev_tl_op: int,
-    mo_sin_old_il_acct: int,
     tot_cur_bal: float,
     avg_cur_bal: float,
     total_rev_hi_lim: float,
@@ -65,8 +64,6 @@ async def submit_application(
         errors.append("Total bankcard limit cannot be negative.")
     if mo_sin_old_rev_tl_op < 0:
         errors.append("Age of oldest revolving account cannot be negative.")
-    if mo_sin_old_il_acct < 0:
-        errors.append("Age of oldest installment account cannot be negative.")
     if tot_cur_bal < 0:
         errors.append("Total current balance cannot be negative.")
     if avg_cur_bal < 0:
@@ -98,7 +95,6 @@ async def submit_application(
         "bc_open_to_buy": bc_open_to_buy,
         "total_bc_limit": total_bc_limit,
         "mo_sin_old_rev_tl_op": mo_sin_old_rev_tl_op,
-        "mo_sin_old_il_acct": mo_sin_old_il_acct,
         "tot_cur_bal": tot_cur_bal,
         "avg_cur_bal": avg_cur_bal,
         "total_rev_hi_lim": total_rev_hi_lim,
@@ -119,7 +115,6 @@ async def submit_application(
         bc_open_to_buy=bc_open_to_buy,
         total_bc_limit=total_bc_limit,
         mo_sin_old_rev_tl_op=mo_sin_old_rev_tl_op,
-        mo_sin_old_il_acct=mo_sin_old_il_acct,
         tot_cur_bal=tot_cur_bal,
         avg_cur_bal=avg_cur_bal,
         total_rev_hi_lim=total_rev_hi_lim,

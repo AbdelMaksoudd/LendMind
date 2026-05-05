@@ -46,7 +46,6 @@ class LoanApplication(Base):
 
     # Section 4: Banking History
     mo_sin_old_rev_tl_op = Column(Integer, nullable=False)
-    mo_sin_old_il_acct = Column(Integer, nullable=False)
     tot_cur_bal = Column(Float, nullable=False)
     avg_cur_bal = Column(Float, nullable=False)
     total_rev_hi_lim = Column(Float, nullable=False)

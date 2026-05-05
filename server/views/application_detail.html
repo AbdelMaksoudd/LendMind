@@ -97,10 +97,6 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
           <dd>{{ application.mo_sin_old_rev_tl_op }} months</dd>
         </div>
         <div class="detail-item">
-          <dt>Age of Oldest Installment Account</dt>
-          <dd>{{ application.mo_sin_old_il_acct }} months</dd>
-        </div>
-        <div class="detail-item">
           <dt>Total Current Balance</dt>
           <dd>${{ "{:,.2f}".format(application.tot_cur_bal) }}</dd>
         </div>

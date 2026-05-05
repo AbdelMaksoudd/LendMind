@@ -188,35 +188,19 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
       <fieldset class="form-section">
         <legend>Banking History</legend>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="mo_sin_old_rev_tl_op"
-              >Age of Oldest Revolving Account in Months</label
-            >
-            <input
-              type="number"
-              id="mo_sin_old_rev_tl_op"
-              name="mo_sin_old_rev_tl_op"
-              required
-              min="0"
-              step="1"
-              placeholder="e.g. 120"
-            />
-          </div>
-          <div class="form-group">
-            <label for="mo_sin_old_il_acct"
-              >Age of Oldest Installment Account in Months</label
-            >
-            <input
-              type="number"
-              id="mo_sin_old_il_acct"
-              name="mo_sin_old_il_acct"
-              required
-              min="0"
-              step="1"
-              placeholder="e.g. 60"
-            />
-          </div>
+        <div class="form-group">
+          <label for="mo_sin_old_rev_tl_op"
+            >Age of Oldest Revolving Account in Months</label
+          >
+          <input
+            type="number"
+            id="mo_sin_old_rev_tl_op"
+            name="mo_sin_old_rev_tl_op"
+            required
+            min="0"
+            step="1"
+            placeholder="e.g. 120"
+          />
         </div>
 
         <div class="form-row">
