@@ -6,11 +6,28 @@ from database import LoanStatus
 SAVED_MODELS_DIR = Path(__file__).resolve().parent.parent.parent / "saved_models"
 
 
+def calculate_monthly_installment(loan_amnt, int_rate, loan_term):
+    P = loan_amnt
+    n = loan_term
+    r = int_rate / 12 / 100
+
+    if r == 0:
+        return round(P / n, 2)
+
+    return round(P * (r * (1 + r) ** n) / ((1 + r) ** n - 1), 2)
+
+
 def loan_approve(user_input):
+    monthly_installment = calculate_monthly_installment(
+        user_input["loan_amnt"], user_input["int_rate"], user_input["loan_term"]
+    )
+    user_input["installment"] = monthly_installment
+    user_input.pop("loan_term", None)
+
     df = pd.DataFrame([user_input])
     initial_approve = False
 
-     ### for loan approve (rf model):
+    ### for loan approve (rf model):
 
     rf_model = joblib.load(SAVED_MODELS_DIR / "rf_model.pkl")
     scaler_rf = joblib.load(SAVED_MODELS_DIR / "scaler_rf.pkl")
@@ -29,7 +46,6 @@ def loan_approve(user_input):
         mlr_model = joblib.load(SAVED_MODELS_DIR / "mlr_model.pkl")
         scaler_mlr = joblib.load(SAVED_MODELS_DIR / "scaler_mlr.pkl")
 
-        
         x_mlr = df.drop(columns="loan_amnt")
         x_mlr_scaled = scaler_mlr.transform(x_mlr)
 
@@ -37,12 +53,9 @@ def loan_approve(user_input):
         max_predicted = max(0.0, float(predicted_loan))
 
         if requested_loan > predicted_loan:
-            if max_predicted ==0.0:
+            if max_predicted == 0.0:
                 return LoanStatus.REJECTED
             else:
                 return LoanStatus.REJECTED, predicted_loan
         else:
             return LoanStatus.APPROVED
-
-
-   
