@@ -4,5 +4,3 @@ venv/
 *.pyc
 .mypy_cache
 .env
-server/src/services/test.py
-server/src/services/database.py
