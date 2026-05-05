@@ -31,6 +31,7 @@ class LoanApplication(Base):
     # Section 1: Loan Details
     loan_amnt = Column(Float, nullable=False)
     int_rate = Column(Float, nullable=False)
+    loan_term = Column(Integer, nullable=False)
 
     # Section 2: Financial Profile
     annual_inc = Column(Float, nullable=False)

@@ -42,6 +42,10 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
           <dt>Expected Interest Rate</dt>
           <dd>{{ "{:.2f}".format(application.int_rate) }}%</dd>
         </div>
+        <div class="detail-item">
+          <dt>Loan Term</dt>
+          <dd>{{ application.loan_term }} months</dd>
+        </div>
       </dl>
     </section>
 

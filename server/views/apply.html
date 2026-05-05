@@ -64,6 +64,19 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
             class="range-slider"
           />
         </div>
+
+        <div class="form-group">
+          <label for="loan_term">Loan Term (months)</label>
+          <input
+            type="number"
+            id="loan_term"
+            name="loan_term"
+            required
+            min="1"
+            step="1"
+            placeholder="e.g. 36"
+          />
+        </div>
       </fieldset>
 
       <fieldset class="form-section">

@@ -21,6 +21,7 @@ async def submit_application(
     applicant_name: str,
     loan_amnt: float,
     int_rate: float,
+    loan_term: int,
     annual_inc: float,
     dti: float,
     revol_bal: float,
@@ -46,6 +47,8 @@ async def submit_application(
         errors.append("Loan amount must be greater than zero.")
     if int_rate < 0 or int_rate > 100:
         errors.append("Interest rate must be between 0 and 100.")
+    if loan_term <= 0:
+        errors.append("Loan term must be greater than zero.")
     if annual_inc <= 0:
         errors.append("Annual income must be greater than zero.")
     if dti < 0 or dti > 100:
@@ -86,6 +89,7 @@ async def submit_application(
     user_input = {
         "loan_amnt": loan_amnt,
         "int_rate": int_rate,
+        "loan_term": loan_term,
         "annual_inc": annual_inc,
         "dti": dti,
         "revol_bal": revol_bal,
@@ -106,6 +110,7 @@ async def submit_application(
         applicant_name=applicant_name.strip(),
         loan_amnt=loan_amnt,
         int_rate=int_rate,
+        loan_term=loan_term,
         annual_inc=annual_inc,
         dti=dti,
         revol_bal=revol_bal,
