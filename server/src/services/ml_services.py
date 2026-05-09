@@ -27,6 +27,19 @@ def loan_approve(user_input):
     df = pd.DataFrame([user_input])
     initial_approve = False
 
+    requested_loan = float(df["loan_amnt"].iloc[0])
+    annual_inc = float(df['annual_inc'].iloc[0])
+    interest_rate = float(df['int_rate'].iloc[0]) if 'int_rate' in df.columns else 12.0
+
+    term_months = float(df['term_months'].iloc[0]) if 'term_months' in df.columns else 36.0
+    
+    df['term_ 60 months'] = 1 if term_months >= 60 else 0
+
+    initial_installment = calculate_installment(requested_loan, interest_rate, term_months)
+    df["installment"] = initial_installment
+    df["loan_to_income"] = requested_loan / (annual_inc + 1)
+    df["monthly_burden"] = initial_installment / ((annual_inc / 12) + 1)    
+
     ### for loan approve (rf model):
     rf_loan_status = rf(df)
     if rf_loan_status == 0:
@@ -47,6 +60,13 @@ def loan_approve(user_input):
             else:
                 df_new_rf = df.copy()
                 df_new_rf["loan_amnt"] = max_predicted
+
+
+                new_installment = calculate_installment(max_predicted, interest_rate, term_months)
+                df_new_rf["installment"] = new_installment
+                df_new_rf["loan_to_income"] = max_predicted / (annual_inc + 1)
+                df_new_rf["monthly_burden"] = new_installment / ((annual_inc / 12) + 1)
+                
                 new_rf_loan_status = rf(df_new_rf)
                 if new_rf_loan_status == 0:
                     return {
@@ -62,6 +82,13 @@ def loan_approve(user_input):
             return {"status": LoanStatus.REJECTED, "value": None}
         df_new_rf = df.copy()
         df_new_rf["loan_amnt"] = max_predicted
+
+
+        new_installment = calculate_installment(max_predicted, interest_rate, term_months)
+        df_new_rf["installment"] = new_installment
+        df_new_rf["loan_to_income"] = max_predicted / (annual_inc + 1)
+        df_new_rf["monthly_burden"] = new_installment / ((annual_inc / 12) + 1)
+        
         new_rf_loan_status = rf(df_new_rf)
         if new_rf_loan_status == 0:
             return {"status": LoanStatus.REJECTED, "value": round(max_predicted, 2)}
@@ -78,9 +105,17 @@ def rf(user_input):
 
 def mlr(user_input):
 
-    x_mlr = user_input.drop(columns="loan_amnt")
-    x_mlr = x_mlr[scaler_mlr.feature_names_in_]
+    x_mlr = user_input[scaler_mlr.feature_names_in_]
     x_mlr_scaled = scaler_mlr.transform(x_mlr)
 
     predicted_loan = mlr_model.predict(x_mlr_scaled)[0]
     return predicted_loan
+
+
+def calculate_installment(amount, annual_rate, months):
+    if amount == 0:
+        return 0
+    r = (annual_rate / 100) / 12
+    if r ==0:
+         return amount / months
+    return amount * (r * (1 + r)**months) / ((1 + r)**months - 1)
