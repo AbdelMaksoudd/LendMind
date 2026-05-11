@@ -153,6 +153,7 @@ async def submit_application(
             "request": request,
             "user": user,
             "success": msg,
+            "result_status": load_predication["status"].value.lower(),
             "errors": None,
         },
     )

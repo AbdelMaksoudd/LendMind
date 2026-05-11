@@ -28,6 +28,15 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
       Applicant: {{ application.applicant_name }} &middot; Submitted on {{
       application.created_at.strftime('%B %d, %Y at %I:%M %p') }}
     </p>
+    {% if application.status.value == 'Approved' %}
+    <div class="alert alert-approved" role="status">
+      <strong>Approved</strong> — This loan application has been approved.
+    </div>
+    {% else %}
+    <div class="alert alert-rejected" role="status">
+      <strong>Rejected</strong> — This loan application has been rejected.
+    </div>
+    {% endif %}
   </div>
 
   <div class="detail-grid">

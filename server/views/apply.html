@@ -11,7 +11,9 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
     </div>
 
     {% if success %}
-    <div class="alert alert-success" role="alert">{{ success }}</div>
+    <div class="alert alert-{{ result_status }}" role="alert">
+      {{ success }}
+    </div>
     {% endif %} {% if errors %} {% for error in errors %}
     <div class="alert alert-error" role="alert">{{ error }}</div>
     {% endfor %} {% endif %}
