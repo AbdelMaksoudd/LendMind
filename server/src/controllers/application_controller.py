@@ -21,7 +21,7 @@ async def submit_application(
     applicant_name: str,
     loan_amnt: float,
     int_rate: float,
-    loan_term: int,
+    term_months: int,
     annual_inc: float,
     dti: float,
     revol_bal: float,
@@ -31,9 +31,14 @@ async def submit_application(
     bc_open_to_buy: float,
     total_bc_limit: float,
     mo_sin_old_rev_tl_op: int,
+    mo_sin_old_il_acct: int,
     tot_cur_bal: float,
     avg_cur_bal: float,
     total_rev_hi_lim: float,
+    total_acc: int,
+    mort_acc: int,
+    num_bc_sats: int,
+    num_bc_tl: int,
     db: Session,
 ):
     user = require_role(request, "user")
@@ -47,7 +52,7 @@ async def submit_application(
         errors.append("Loan amount must be greater than zero.")
     if int_rate < 0 or int_rate > 100:
         errors.append("Interest rate must be between 0 and 100.")
-    if loan_term <= 0:
+    if term_months <= 0:
         errors.append("Loan term must be greater than zero.")
     if annual_inc <= 0:
         errors.append("Annual income must be greater than zero.")
@@ -67,12 +72,22 @@ async def submit_application(
         errors.append("Total bankcard limit cannot be negative.")
     if mo_sin_old_rev_tl_op < 0:
         errors.append("Age of oldest revolving account cannot be negative.")
+    if mo_sin_old_il_acct < 0:
+        errors.append("Age of oldest installment account cannot be negative.")
     if tot_cur_bal < 0:
         errors.append("Total current balance cannot be negative.")
     if avg_cur_bal < 0:
         errors.append("Average current balance cannot be negative.")
     if total_rev_hi_lim < 0:
         errors.append("Revolving high limit cannot be negative.")
+    if total_acc < 0:
+        errors.append("Total accounts cannot be negative.")
+    if mort_acc < 0:
+        errors.append("Mortgage accounts cannot be negative.")
+    if num_bc_sats < 0:
+        errors.append("Satisfactory bankcard accounts cannot be negative.")
+    if num_bc_tl < 0:
+        errors.append("Total bankcard trades cannot be negative.")
 
     if errors:
         return templates.TemplateResponse(
@@ -89,7 +104,6 @@ async def submit_application(
     data = {
         "int_rate": int_rate,
         "dti": dti,
-        "installment": calculate_monthly_installment(loan_amnt, int_rate, loan_term),
         "annual_inc": annual_inc,
         "revol_util": revol_util,
         "avg_cur_bal": avg_cur_bal,
@@ -102,6 +116,12 @@ async def submit_application(
         "total_bc_limit": total_bc_limit,
         "total_bal_ex_mort": total_bal_ex_mort,
         "total_rev_hi_lim": total_rev_hi_lim,
+        "term_months": term_months,
+        "mo_sin_old_il_acct": mo_sin_old_il_acct,
+        "total_acc": total_acc,
+        "mort_acc": mort_acc,
+        "num_bc_sats": num_bc_sats,
+        "num_bc_tl": num_bc_tl,
     }
 
     load_predication = loan_approve(data)
@@ -110,7 +130,7 @@ async def submit_application(
         applicant_name=applicant_name.strip(),
         loan_amnt=loan_amnt,
         int_rate=int_rate,
-        loan_term=loan_term,
+        loan_term=term_months,
         annual_inc=annual_inc,
         dti=dti,
         revol_bal=revol_bal,
@@ -120,9 +140,14 @@ async def submit_application(
         bc_open_to_buy=bc_open_to_buy,
         total_bc_limit=total_bc_limit,
         mo_sin_old_rev_tl_op=mo_sin_old_rev_tl_op,
+        mo_sin_old_il_acct=mo_sin_old_il_acct,
         tot_cur_bal=tot_cur_bal,
         avg_cur_bal=avg_cur_bal,
         total_rev_hi_lim=total_rev_hi_lim,
+        total_acc=total_acc,
+        mort_acc=mort_acc,
+        num_bc_sats=num_bc_sats,
+        num_bc_tl=num_bc_tl,
         status=load_predication["status"],
     )
     db.add(application)
@@ -177,14 +202,3 @@ def render_application_detail(request: Request, app_id: int, db: Session):
             "application": application,
         },
     )
-
-
-def calculate_monthly_installment(loan_amnt, int_rate, loan_term):
-    P = loan_amnt
-    n = loan_term
-    r = int_rate / 12 / 100
-
-    if r == 0:
-        return round(P / n, 2)
-
-    return round(P * (r * (1 + r) ** n) / ((1 + r) ** n - 1), 2)

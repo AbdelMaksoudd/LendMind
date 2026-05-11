@@ -68,16 +68,15 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
         </div>
 
         <div class="form-group">
-          <label for="loan_term">Loan Term (months)</label>
-          <input
-            type="number"
-            id="loan_term"
-            name="loan_term"
-            required
-            min="1"
-            step="1"
-            placeholder="e.g. 36"
-          />
+          <label for="term_months">Loan Term</label>
+          <select id="term_months" name="term_months" required>
+            <option value="" disabled selected>Select loan term</option>
+            <option value="12">12 months (1 year)</option>
+            <option value="24">24 months (2 years)</option>
+            <option value="36">36 months (3 years)</option>
+            <option value="48">48 months (4 years)</option>
+            <option value="60">60 months (5 years)</option>
+          </select>
         </div>
       </fieldset>
 
@@ -218,6 +217,21 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
           />
         </div>
 
+        <div class="form-group">
+          <label for="mo_sin_old_il_acct"
+            >Age of Oldest Installment Account in Months</label
+          >
+          <input
+            type="number"
+            id="mo_sin_old_il_acct"
+            name="mo_sin_old_il_acct"
+            required
+            min="0"
+            step="1"
+            placeholder="e.g. 60"
+          />
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label for="tot_cur_bal">Total Current Balance</label>
@@ -256,6 +270,64 @@ System{% endblock %} {% block nav_apply %}active{% endblock %} {% block content
             step="0.01"
             placeholder="0.00"
           />
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Account History</legend>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="total_acc">Total Accounts</label>
+            <input
+              type="number"
+              id="total_acc"
+              name="total_acc"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 20"
+            />
+          </div>
+          <div class="form-group">
+            <label for="mort_acc">Mortgage Accounts</label>
+            <input
+              type="number"
+              id="mort_acc"
+              name="mort_acc"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 1"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="num_bc_sats">Satisfactory Bankcard Accounts</label>
+            <input
+              type="number"
+              id="num_bc_sats"
+              name="num_bc_sats"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 5"
+            />
+          </div>
+          <div class="form-group">
+            <label for="num_bc_tl">Total Bankcard Trades</label>
+            <input
+              type="number"
+              id="num_bc_tl"
+              name="num_bc_tl"
+              required
+              min="0"
+              step="1"
+              placeholder="e.g. 8"
+            />
+          </div>
         </div>
       </fieldset>
 

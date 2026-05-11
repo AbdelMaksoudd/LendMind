@@ -53,7 +53,10 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
         </div>
         <div class="detail-item">
           <dt>Loan Term</dt>
-          <dd>{{ application.loan_term }} months</dd>
+          <dd>
+            {{ application.loan_term }} months ({{ application.loan_term // 12
+            }} year{{ 's' if application.loan_term // 12 != 1 else '' }})
+          </dd>
         </div>
       </dl>
     </section>
@@ -110,6 +113,10 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
           <dd>{{ application.mo_sin_old_rev_tl_op }} months</dd>
         </div>
         <div class="detail-item">
+          <dt>Age of Oldest Installment Account</dt>
+          <dd>{{ application.mo_sin_old_il_acct }} months</dd>
+        </div>
+        <div class="detail-item">
           <dt>Total Current Balance</dt>
           <dd>${{ "{:,.2f}".format(application.tot_cur_bal) }}</dd>
         </div>
@@ -119,7 +126,29 @@ Loan Management System{% endblock %} {% block nav_dashboard %}active{% endblock
         </div>
         <div class="detail-item">
           <dt>Revolving High Limit</dt>
-          <dd>${{ "{:,.2f}".format(application.total_rev_hi_lim) }}</dd>
+          <dd>${{ "{0:,.2f}".format(application.total_rev_hi_lim) }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="panel detail-section" aria-label="Account History">
+      <h2>Account History</h2>
+      <dl class="detail-list">
+        <div class="detail-item">
+          <dt>Total Accounts</dt>
+          <dd>{{ application.total_acc }}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Mortgage Accounts</dt>
+          <dd>{{ application.mort_acc }}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Satisfactory Bankcard Accounts</dt>
+          <dd>{{ application.num_bc_sats }}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Total Bankcard Trades</dt>
+          <dd>{{ application.num_bc_tl }}</dd>
         </div>
       </dl>
     </section>
