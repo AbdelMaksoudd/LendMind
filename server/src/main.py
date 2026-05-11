@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
+from dotenv import load_dotenv
 import uvicorn
+import os
+
+load_dotenv()
 
 from database import init_db
 from auth import BASE_DIR
@@ -12,9 +16,10 @@ from routers.applications import router as applications_router
 from routers.ws import router as ws_router
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="lendmind-mgmt-secret-key-2026")
-# TODO: create .env file and load secret key from it
-
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SECRET_KEY", "lendmind-mgmt-secret-key-2026"),
+)
 
 app.mount("/public", StaticFiles(directory=str(BASE_DIR / "public")), name="public")
 
